@@ -251,6 +251,11 @@ uint32_t expr(char *e, bool *success) {
 			}
 			else if(tokens[p].type == 262)
 			{
+				sscanf(tokens[p].str,"%x",&i);
+				return i;
+			}
+			else if(tokens[p].type == 263)
+			{
 				int j=0,sl=1,sw=1;
 				for (; j < 8 && sl != 0 && sw != 0 ; j++)
 				{
@@ -300,6 +305,10 @@ uint32_t expr(char *e, bool *success) {
 			{
 				i = eval(p+1,q);
 				return !i;
+			}
+			if(((q-p == 1) || (tokens[p+1].type == '(' && tokens[q].type == ')')) && tokens[p].type == '*' )
+			{
+				return swaddr_read(eval(p+1,q),4);
 			}
 			op = find_dominant_operator(p,q);
 
